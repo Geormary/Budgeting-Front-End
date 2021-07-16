@@ -1,0 +1,10 @@
+import React from "react";
+
+export default function Home() {
+  return (
+    <div>
+      <h2>Hello!</h2>
+      <h3>Welcome to "The BUDGET" app!</h3>
+    </div>
+  );
+}
