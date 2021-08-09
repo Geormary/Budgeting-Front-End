@@ -1,48 +1,55 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-// import { withRouter } from "react-router-dom";
 import { apiURL } from "../util/apiURL";
 
 const API = apiURL();
 
 export default function TransactionNewForm() {
-    const [transaction, setTransaction] = useState([]);
-    useEffect(() => {
-        axios
-          .post(`${API}/transactions/`)
-          .then((res) => {
-            console.log(res.data);
-            setTransaction(res.data);
-          })
-          .catch((e) => {
-            console.error(e);
-          });
-      }, []);
+  const [transaction, setTransaction] = useState({
+    date: "",
+    category:"",
+    amount:""
+  });
 
+  const handleChange = (e) => {
+    setTransaction({...transaction,[e.target.name]:e.target.value})
+  };
 
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${API}/transactions`, transaction)
+      .then((res) => {
+        console.log(res.data);
+        setTransaction(res.data);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 
   return (
-    <form>
-      <div class="mb-3  col-md-4">
+    <form onSubmit={handleSumbit}>
+      <div class="mb-3  col-md-4 d-flex">
         <label for="exampleFormControlInput1" class="form-label">
-          Date
+          Date: 
         </label>
-        <input type="text" class="form-control" />{" "}
+        <input onChange={handleChange} name="date" value={transaction.date} type="text" class="form-control" />{" "}
       </div>
-      <div class="mb-3 col-md-4">
+      <div class="mb-3 col-md-4 d-flex">
         <label for="exampleFormControlInput1" class="form-label">
-          Amount
+          Amount: 
         </label>
-        <input type="number" class="form-control" />{" "}
+        <input onChange={handleChange} name ="amount" value = {transaction.amount}type="text" class="form-control" />{" "}
       </div>
-      <div class="mb-3 col-md-4">
+      <div class="mb-3 col-md-4 d-flex">
         <label for="exampleFormControlInput1" class="form-label">
-          Category
-        </label>
-        <input type="text" class="form-control" />
+          Category:
+        </label> 
+        <input onChange={handleChange} name="category" value={transaction.category}type="text" class="form-control" />
       </div>
-      <div class="mb-3 col-md-4">
+      <div class="mb-3 col-md-4 d-flex">
         <button type="submit">Submit</button>
       </div>
     </form>

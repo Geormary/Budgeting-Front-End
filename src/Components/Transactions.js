@@ -19,21 +19,36 @@ export default function Transactions() {
       .catch((c) => console.warn("catch", c));
   }, []);
 
-  console.log(transactions);
+  const bankTotal = (transactions) => {
+    let sum = 0;
+    transactions.map((transaction) => {
+      let num = Number(transaction.amount);
+      return (sum += num);
+    });
+    return sum;
+  };
+
   return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Category</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {transactions.map((transaction) => {
-          return <Transaction key={transaction.id} transaction={transaction} />;
-        })}
-      </tbody>
-    </table>
+    <>
+      <h6>Bank Account Total: {bankTotal(transactions)} </h6>
+      <br />
+      <br />
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => {
+            return (
+              <Transaction key={transaction.id} transaction={transaction} />
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 }
